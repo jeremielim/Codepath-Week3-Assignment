@@ -44,6 +44,7 @@ class MailboxViewController: UIViewController {
     var messageOriginalCenter: CGPoint!
     var messageStart: CGFloat!
     var messageEnd: CGFloat!
+    var messageDeleted: CGFloat!
     var laterImageViewCenter: CGPoint!
     var archiveStart: CGFloat!
     var laterStart: CGFloat!
@@ -60,9 +61,12 @@ class MailboxViewController: UIViewController {
         
         messageStart = messageUIView.center.x
         messageEnd =  messageStart - 400
+        messageDeleted =  messageStart + 400
         
         laterStart = laterImageView.center.x
         archiveStart = archiveImageView.center.x
+        
+        
         
     }
     
@@ -81,6 +85,8 @@ class MailboxViewController: UIViewController {
         let greenColor: String = "#70D962"
         let redColor: String = "#EB5433"
         
+        feedScrollView.backgroundColor = UIColor.init(hexString: grayColor)
+        
         if sender.state == UIGestureRecognizerState.Began {
             messageOriginalCenter = messageUIView.center
             laterImageViewCenter = laterImageView.center
@@ -96,27 +102,33 @@ class MailboxViewController: UIViewController {
             if translation.x <= -60 && translation.x >= -259 {
                 laterImageView.center = CGPoint(x: (laterImageViewCenter.x + translation.x) + 60, y: laterImageViewCenter.y)
                 
-                messageParentView.backgroundColor = UIColor.init(hexString: yellowColor)
+                feedScrollView.backgroundColor = UIColor.init(hexString: yellowColor)
                 
                 laterImageView.image = UIImage(named: "later_icon")
             } else if translation.x <= -260 {
                 laterImageView.center = CGPoint(x: (laterImageViewCenter.x + translation.x) + 60, y: laterImageViewCenter.y)
                 
-                messageParentView.backgroundColor = UIColor.init(hexString: brownColor)
+                feedScrollView.backgroundColor = UIColor.init(hexString: brownColor)
                 
                 laterImageView.image = UIImage(named: "list_icon")
             } else if translation.x >= 60 && translation.x <= 259 {
                 
-                messageParentView.backgroundColor = UIColor.init(hexString: greenColor)
+                feedScrollView.backgroundColor = UIColor.init(hexString: greenColor)
                 
                 archiveImageView.center = CGPoint(x: (archiveImageViewCenter.x + translation.x) - 60, y: archiveImageViewCenter.y)
                 
                 archiveImageView.image = UIImage(named: "archive_icon")
                 
+            } else if translation.x >= 260 {
+                feedScrollView.backgroundColor = UIColor.init(hexString: redColor)
+                
+                archiveImageView.center = CGPoint(x: (archiveImageViewCenter.x + translation.x) - 60, y: archiveImageViewCenter.y)
+                
+                archiveImageView.image = UIImage(named: "delete_icon")
             } else {
                 laterImageView.center.x = laterStart
                 
-                messageParentView.backgroundColor = UIColor.init(hexString: grayColor)
+                feedScrollView.backgroundColor = UIColor.init(hexString: grayColor)
             }
             
         } else if sender.state == UIGestureRecognizerState.Ended {
@@ -153,6 +165,27 @@ class MailboxViewController: UIViewController {
                 self.laterImageView.alpha = 0
                 self.archiveImageView.alpha = 0
                 
+            } else if translation.x >= 60  {
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.messageUIView.center.x = self.messageDeleted
+                    self.feedView.center.y -= 87
+                    
+                    self.laterImageView.alpha = 0
+                    self.archiveImageView.alpha = 0
+                })
+                
+                UIView.animateWithDuration(0.3, delay: 1, options: [], animations: { () -> Void in
+                    self.messageUIView.center.x = self.messageOriginalCenter.x
+                    self.feedView.center.y += 87
+                    
+                    }, completion: { (Bool) -> Void in
+                        self.laterImageView.alpha = 1
+                        self.archiveImageView.alpha = 1
+                        self.archiveImageView.center.x = self.archiveStart
+                    })
+                
+                
             } else {
                 UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: { () -> Void in
                     
@@ -160,11 +193,8 @@ class MailboxViewController: UIViewController {
                     self.laterImageView.center.x = self.laterStart
                     
                     }, completion: nil)
-                
             }
         }
-        
-        
     }
     
     @IBAction func didDismissReschedule(sender: AnyObject) {
