@@ -228,55 +228,57 @@ class MailboxViewController: UIViewController {
             
         } else if sender.state == UIGestureRecognizerState.Ended {
             if translation.x <= -60 && translation.x >= -259 {
-                
-                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: { () -> Void in
-                    
-                    self.messageUIView.center.x = self.messageEnd
-                    
-                    }, completion: nil)
-                
-                UIView.animateWithDuration(0.3, delay: 0.3, options: [], animations: { () -> Void in
-                    self.rescheduleParent.alpha = 1
-                    }, completion: nil)
-                
+                // Hide Icons
                 self.laterImageView.alpha = 0
                 self.archiveImageView.alpha = 0
                 
-            } else if translation.x <= -260 {
-                
+                // Animate messages out of the screen
                 UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: { () -> Void in
                     
                     self.messageUIView.center.x = self.messageEnd
                     
                     }, completion: nil)
                 
+                // Show Reschedule Parent
+                UIView.animateWithDuration(0.3, delay: 0.3, options: [], animations: { () -> Void in
+                    
+                    self.rescheduleParent.alpha = 1
+                    
+                    }, completion: nil)
+                
+            } else if translation.x <= -260 {
+                // Hide Icons
+                self.laterImageView.alpha = 0
+                self.archiveImageView.alpha = 0
+                
+                // Animate messages out of the screen
+                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: { () -> Void in
+                    
+                    self.messageUIView.center.x = self.messageEnd
+                    
+                    }, completion: nil)
+                
+                // Show Later Parent
                 UIView.animateWithDuration(0.3, delay: 0.3, options: [], animations: { () -> Void in
                     
                     self.laterParent.alpha = 1
                     
                     }, completion: nil)
                 
-                
+            } else if translation.x >= 60  {
+                // Hide Icons
                 self.laterImageView.alpha = 0
                 self.archiveImageView.alpha = 0
                 
-            } else if translation.x >= 60  {
-                
+                // Animate messages out of the screen
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.messageUIView.center.x = self.messageDeleted
-                    self.feedView.center.y -= 87
+                    delay(0.3, closure: { () -> () in
+                        self.feedView.center.y -= 87
+                    })
                     
-                    self.laterImageView.alpha = 0
-                    self.archiveImageView.alpha = 0
                 })
                 
-            } else {
-                UIView.animateWithDuration(0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [], animations: { () -> Void in
-                    
-                    self.messageUIView.center.x = self.messageStart
-                    self.laterImageView.center.x = self.laterStart
-                    
-                    }, completion: nil)
             }
         }
     }
@@ -331,8 +333,12 @@ class MailboxViewController: UIViewController {
                 self.feedView.center.y += 87
                 
                 }, completion: { (Bool) -> Void in
-                    self.laterImageView.alpha = 1
-                    self.archiveImageView.alpha = 1
+                    
+                    // Reset Icon Images
+                    self.laterImageView.image = UIImage(named: "later_icon")
+                    self.laterImageView.center.x = self.laterStart
+                    self.archiveImageView.image = UIImage(named: "archive_icon")
+                    self.archiveImageView.center.x = self.archiveStart
             })
         }
     }
