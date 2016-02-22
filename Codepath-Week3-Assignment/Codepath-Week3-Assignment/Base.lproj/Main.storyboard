@@ -46,6 +46,9 @@
                                             <segment title="" image="archive_nav_icon"/>
                                         </segments>
                                         <color key="tintColor" red="0.4392156862745098" green="0.77254901960784317" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="menuSegmentedControl:" destination="YLl-aG-E63" eventType="valueChanged" id="zPx-Lt-r2V"/>
+                                        </connections>
                                     </segmentedControl>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="FLa-7a-WZS" userLabel="Compose">
                                         <rect key="frame" x="277" y="22" width="45" height="30"/>
@@ -144,6 +147,36 @@
                                     </view>
                                 </subviews>
                             </view>
+                            <view contentMode="scaleToFill" id="Vbo-Aa-W2z" userLabel="Later View">
+                                <rect key="frame" x="0.0" y="63" width="320" height="129"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="search" id="C7B-4H-tdz">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </imageView>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="message" id="1vD-4H-dcL">
+                                        <rect key="frame" x="0.0" y="50" width="320" height="86"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="4iZ-WX-wVe" userLabel="Archive View">
+                                <rect key="frame" x="0.0" y="63" width="320" height="129"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="search" id="qLA-wN-qir">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </imageView>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="message" id="rdK-OC-a88">
+                                        <rect key="frame" x="0.0" y="50" width="320" height="86"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -151,17 +184,21 @@
                     <size key="freeformSize" width="320" height="1202"/>
                     <connections>
                         <outlet property="archiveImageView" destination="6ox-xX-bSP" id="73a-R1-Sxl"/>
+                        <outlet property="archiveNavView" destination="4iZ-WX-wVe" id="xV3-Pg-uYv"/>
                         <outlet property="composeTextField" destination="msS-le-0cs" id="W2J-pj-E8u"/>
                         <outlet property="composeView" destination="Ahv-Qx-DqI" id="0iQ-Vk-7J1"/>
                         <outlet property="composeWindowParent" destination="hqd-bC-cKu" id="N6B-bC-yDi"/>
                         <outlet property="composeWindowView" destination="Gdt-VL-eKN" id="y3z-62-cDP"/>
                         <outlet property="feedScrollView" destination="Tz0-fK-6gO" id="peY-1K-F6q"/>
                         <outlet property="feedView" destination="fwl-Ac-StN" id="UHX-fV-dNY"/>
+                        <outlet property="helpView" destination="qPc-xr-fO5" id="Lfn-6I-N9B"/>
                         <outlet property="laterImageView" destination="yyw-qH-Vj6" id="ofa-h0-GSZ"/>
+                        <outlet property="laterNavView" destination="Vbo-Aa-W2z" id="v0a-nt-nfR"/>
                         <outlet property="laterParent" destination="cwu-sb-HcZ" id="hYu-iq-eq9"/>
                         <outlet property="messageParentView" destination="CHH-VS-t0L" id="wKv-Xc-zZu"/>
                         <outlet property="messageUIView" destination="sTQ-a4-2eX" id="g0H-0h-QIy"/>
                         <outlet property="rescheduleParent" destination="O2P-qg-U7w" id="oxd-Y4-TYb"/>
+                        <outlet property="searchView" destination="kOb-5f-bHj" id="amO-wN-F6o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zOB-1z-leI" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -31,16 +31,20 @@ extension UIColor {
 class MailboxViewController: UIViewController {
     
     
+    @IBOutlet weak var searchView: UIImageView!
+    @IBOutlet weak var helpView: UIImageView!
     @IBOutlet weak var composeTextField: UITextField!
     @IBOutlet weak var composeView: UIView!
     @IBOutlet weak var composeWindowView: UIImageView!
     @IBOutlet weak var feedView: UIImageView!
+    @IBOutlet weak var laterNavView: UIView!
     @IBOutlet weak var composeWindowParent: UIView!
     @IBOutlet weak var laterParent: UIView!
     @IBOutlet weak var rescheduleParent: UIView!
     @IBOutlet weak var feedScrollView: UIScrollView!
     @IBOutlet weak var messageUIView: UIImageView!
     @IBOutlet weak var laterImageView: UIImageView!
+    @IBOutlet weak var archiveNavView: UIView!
     @IBOutlet weak var archiveImageView: UIImageView!
     @IBOutlet weak var messageParentView: UIView!
     
@@ -58,6 +62,9 @@ class MailboxViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        archiveNavView.frame.origin.x = 320
+        laterNavView.frame.origin.x = -320
         
         // Initialize feed scroll size
         feedScrollView.contentSize = CGSize(width: 320, height: 2000)
@@ -89,20 +96,14 @@ class MailboxViewController: UIViewController {
         feedScrollView.addGestureRecognizer(leftEdgeGesture)
         feedScrollView.addGestureRecognizer(rightEdgeGesture)
         
-        
+        // Setup Compose View
         composeView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        
-        
         composeView.alpha = 0
         
         composeWindowParent.center.y = composeWindowParent.frame.height + 568
         
         composeView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
 
-        
-        
-//        let feedPanGesture = UIPanGestureRecognizer(target: self, action: "didPanFeed")
-//        feedScrollView.addGestureRecognizer(feedPanGesture)
     }
     
     override func didReceiveMemoryWarning() {
@@ -111,6 +112,38 @@ class MailboxViewController: UIViewController {
     }
     
 
+    @IBAction func menuSegmentedControl(sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.laterNavView.frame.origin.x = 0
+                self.feedView.frame.origin.x = 320
+                self.messageUIView.frame.origin.x = 320
+                self.searchView.frame.origin.x = 320
+                self.helpView.frame.origin.x = 320
+            })
+        case 1:
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.archiveNavView.frame.origin.x = 320
+                self.laterNavView.frame.origin.x = -320
+                self.feedView.frame.origin.x = 0
+                self.messageUIView.frame.origin.x = 0
+                self.searchView.frame.origin.x = 0
+                self.helpView.frame.origin.x = 0
+            })
+        case 2:
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.archiveNavView.frame.origin.x = 0
+                self.feedView.frame.origin.x = -320
+                self.messageUIView.frame.origin.x = -320
+                self.searchView.frame.origin.x = -320
+                self.helpView.frame.origin.x = -320
+            })
+        default:
+            ()
+        }
+    }
+    
     
     func onEdgePan(sender: UIScreenEdgePanGestureRecognizer) {
         let velocity = sender.velocityInView(view)
@@ -158,6 +191,7 @@ class MailboxViewController: UIViewController {
             messageUIView.center = CGPoint(x: messageOriginalCenter.x + translation.x, y: messageUIView.center.y)
             
             laterImageView.alpha = convertValue(1, r1Min: 0, r1Max: 60, r2Min:0, r2Max: abs(translation.x))
+
             archiveImageView.alpha = convertValue(1, r1Min: 0, r1Max: 60, r2Min:0, r2Max: abs(translation.x))
             
             if translation.x <= -60 && translation.x >= -259 {
@@ -290,10 +324,7 @@ class MailboxViewController: UIViewController {
     
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent!) {
         if(event.subtype == UIEventSubtype.MotionShake) {
-//            UIView.animateWithDuration(0.3, delay: 1, options: [], animations: { () -> Void in
-//                self.messageUIView.center.x = self.messageOriginalCenter.x
-//                self.feedView.center.y += 87
-//                }, completion: nil)
+
             
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.messageUIView.center.x = self.messageOriginalCenter.x
@@ -302,7 +333,6 @@ class MailboxViewController: UIViewController {
                 }, completion: { (Bool) -> Void in
                     self.laterImageView.alpha = 1
                     self.archiveImageView.alpha = 1
-//                    self.archiveImageView.center.x = self.archiveStart
             })
         }
     }
